@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Passport - Sovereign Identity for Agents</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <nav>
+        <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="28" height="28" rx="8" stroke="white" stroke-width="2"/>
+                <circle cx="16" cy="16" r="6" fill="url(#paint0_linear)"/>
+                <path d="M10 24C10 24 12 20 16 20C20 20 22 24 22 24" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <defs>
+                    <linearGradient id="paint0_linear" x1="16" y1="10" x2="16" y2="22" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#8B5CF6"/>
+                        <stop offset="1" stop-color="#3B82F6"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>AI Passport</span>
+        </div>
+        <div class="links">
+            <a href="https://github.com/yourusername/ai-passport" target="_blank">GitHub</a>
+            <a href="#waitlist" class="btn-secondary">Join Waitlist</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="badge">Pv 0.1.0 MVP Live</div>
+            <h1>Your AI, Your Memory,<br><span class="gradient-text">Everywhere.</span></h1>
+            <p class="subtitle">The first decentralized protocol that gives you ownership of your AI agent's identity. Built on the Internet Computer.</p>
+            
+            <form id="waitlist-form" class="waitlist-form">
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <button type="submit" class="btn-primary">Get Early Access</button>
+            </form>
+            <p id="success-message" class="hidden">✨ You're on the list! Welcome to the future.</p>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="icon">🆔</div>
+                <h3>One Identity</h3>
+                <p>Stop starting from scratch. Carry your AI's personality across apps and games.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🧠</div>
+                <h3>Persistent Memory</h3>
+                <p>Your agent remembers what you tell it. Stored securely on-chain.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🔐</div>
+                <h3>100% Owned</h3>
+                <p>No platform lock-in. You hold the keys to your digital soul.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 AI Passport Protocol. Open Source on GitHub.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
