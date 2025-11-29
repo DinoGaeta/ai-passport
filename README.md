@@ -1,114 +1,238 @@
-# 🆔 AI Passport
-### Sovereign Digital Identity for the Age of AI
+AI Passport
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Status](https://img.shields.io/badge/status-MVP-green.svg)
-![Stack](https://img.shields.io/badge/stack-Internet%20Computer-purple.svg)
-[![Built On ICP](assets/badge_icp.svg)](https://internetcomputer.org)
+A decentralized identity and memory protocol for AI agents.
+AI Passport allows users to own a persistent, portable memory and personality profile for their AI across applications, games, and digital environments.
+It is designed for sovereignty, interoperability, and long-term data ownership, and is fully built on the Internet Computer (ICP).
 
-**AI Passport** is a decentralized protocol that gives users ownership of their AI agent's memory, personality, and preferences. Built on the **Internet Computer (ICP)**, it creates a portable "soul" for your AI that travels with you across applications, games, and metaverses.
+Table of Contents
 
-🌐 **Website**: [ai-passportweb.netlify.app](https://ai-passportweb.netlify.app/)  
-📚 **Documentation**: [Architecture](docs/ARCHITECTURE.md) | [API Reference](docs/API_REFERENCE.md) | [Vision](docs/VISION.md) | [Roadmap](ROADMAP.md)
+Overview
 
----
+Features
 
-## 🏗 Architecture
+Architecture
 
-The system follows a **Registry + Personal Storage** pattern to ensure data sovereignty and scalability.
+Component Overview
 
-```mermaid
+Data Model
+
+Registry API
+
+Passport API
+
+Local Development
+
+Mainnet Deployment
+
+Integration Guide for dApps
+
+Security Model
+
+Limitations
+
+Roadmap
+
+Contributing
+
+License
+
+Overview
+
+AI Passport provides:
+
+A personal canister storing user-owned AI data.
+
+A portable identity an AI agent can use across any application.
+
+A standard interface that external dApps can query.
+
+Full data sovereignty: the user owns the compute and storage.
+
+Features
+
+User-owned identity and memory
+
+Decentralized storage on ICP
+
+Public/private memory segregation
+
+Customizable AI SystemConfig
+
+React-based management dashboard
+
+Internet Identity authentication
+
+Portable public manifest
+
+Scalable Registry + User Canister architecture
+
+Architecture
+
+The system follows a "Registry + Personal Passport" pattern.
+
 graph TD
-    User((User)) -->|Auth via II| Frontend[React Frontend]
-    Frontend -->|Lookup/Provision| Registry[Registry Canister]
-    Registry -->|Manage| Store[Passport Storage]
-    
-    subgraph "Internet Computer"
-    Registry
-    Store
+    User((User)) -->|Authenticate| UI[Frontend Application]
+    UI -->|Lookup / Provision| Registry[Registry Canister]
+    Registry -->|Create / Retrieve| Passport[User Passport Canister]
+    ExternalApp[External dApp] -.->|Read Public Manifest| Passport
+
+    subgraph Internet Computer
+        Registry
+        Passport
     end
-    
-    ExternalApp[External dApp] -.->|Read Public Manifest| Registry
-```
 
-### Core Components
-1.  **Registry Canister**: The "Phonebook". Maps User Principals to their Passport data. Handles provisioning.
-2.  **Passport Data**: Stores the user's `Profile`, `SystemConfig` (AI personality), and `Memories` (logs).
-3.  **Frontend**: A modern React dashboard for users to manage their identity.
+Component Overview
 
----
+Registry Canister
 
-## ⚡ Quickstart
+Maps Principal → PassportCanisterId
 
-### Prerequisites
-- Node.js v18+
-- DFX SDK (v0.15+)
+Provisions new Passports
 
-### Local Development
-1.  **Start the local replica:**
-    ```bash
-    dfx start --clean --background
-    ```
+Write-protected except for provisioning
 
-2.  **Deploy Canisters:**
-    ```bash
-    dfx deploy internet_identity
-    dfx deploy registry
-    ```
+Passport Canister
 
-3.  **Configure Frontend:**
-    - Copy the `registry` canister ID from the output.
-    - Update `frontend/src/services/icp.ts`.
+Stores Profile, SystemConfig, Memories
 
-4.  **Run Frontend:**
-    ```bash
-    cd frontend
-    npm install
-    npm run dev
-    ```
+Exposes public read-only manifest
 
----
+Write access restricted to owner
 
-## 🔌 API Reference (Motoko)
+Frontend Dashboard
 
-### Registry (`src/registry/main.mo`)
+React + Typescript
 
-#### `provision_passport()`
-Creates a new passport for the authenticated caller.
-- **Auth:** Required (Internet Identity)
-- **Returns:** `Result<Principal, Error>`
+Internet Identity authentication
 
-#### `get_passport(user: Principal)`
-Retrieves the passport ID for a given user.
-- **Auth:** Public Query
-- **Returns:** `?Principal`
+Profile and memory management
 
-#### `get_manifest()`
-Returns the public-facing profile and memories. Designed for external apps.
-- **Auth:** Public Query
-- **Returns:** `PublicManifest`
+Data Model
+Profile
+nickname  
+avatarUrl  
+bio  
+tags  
 
----
+SystemConfig
+corePrompt  
+language  
+tone  
 
-## 🌍 Deploy to Mainnet
+MemoryEntry
+id  
+timestamp  
+source  
+content  
+visibility  
 
-1.  **Get Cycles:** You need ICP tokens converted to cycles.
-    ```bash
-    dfx wallet --network ic balance
-    ```
+PublicManifest
+owner  
+profile  
+publicMemories  
+version  
 
-2.  **Deploy:**
-    ```bash
-    dfx deploy --network ic
-    ```
+Registry API
 
-3.  **Verify:**
-    Access your frontend at `https://<canister-id>.ic0.app`.
+provision_passport()
 
----
+get_passport(user : Principal)
 
-## 🤝 Contributing
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to submit pull requests.
+Passport API
 
-## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+update_profile(...)
+
+update_config(...)
+
+add_memory(...)
+
+delete_memory(...)
+
+get_manifest()
+
+get_full_state()
+
+Local Development
+
+Start replica:
+
+dfx start --clean --background
+
+
+Deploy:
+
+dfx deploy internet_identity
+dfx deploy registry
+
+
+Run frontend:
+
+cd frontend
+npm install
+npm run dev
+
+Mainnet Deployment
+
+Convert ICP to cycles:
+
+dfx wallet --network ic balance
+
+
+Deploy:
+
+dfx deploy --network ic
+
+
+Configure frontend with live canister IDs.
+
+Integration Guide for dApps
+
+Call get_passport(userPrincipal)
+
+Call get_manifest()
+
+Use cases:
+
+Cross-app AI personality
+
+Memory portability
+
+Game/NPC personalization
+
+Preference onboarding
+
+Security Model
+
+Passport isolation per user
+
+Internet Identity authentication
+
+Public manifest read-only
+
+Cycles required for operation
+
+Future extensions: ACL, encrypted memory, rate limiting
+
+Limitations
+
+Missing ACL system
+
+No encrypted storage
+
+No on-canister LLM integration
+
+Local-development optimized
+
+Roadmap
+
+v0.2: Backup/restore, ACL
+v0.3: Encrypted memory, Threshold ECDSA
+v1.0: Mainnet release, module marketplace
+
+Contributing
+
+See CONTRIBUTING.md.
+
+License
+
+MIT License.
