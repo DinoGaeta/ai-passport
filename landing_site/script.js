@@ -3,7 +3,7 @@ document.getElementById('waitlist-form').addEventListener('submit', function (e)
 
     const email = document.getElementById('email').value;
     const btn = this.querySelector('button');
-    const successMsg = document.getElementById('success-message');
+    const successSection = document.getElementById('success-section');
 
     // Simulate API call
     btn.textContent = 'Joining...';
@@ -11,7 +11,7 @@ document.getElementById('waitlist-form').addEventListener('submit', function (e)
 
     setTimeout(() => {
         this.style.display = 'none';
-        successMsg.classList.remove('hidden');
+        successSection.classList.remove('hidden');
 
         // Here you would typically send the email to your backend or a service like Mailchimp/Formspree
         console.log(`New waitlist signup: ${email}`);
