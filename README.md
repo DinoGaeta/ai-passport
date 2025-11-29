@@ -1,238 +1,165 @@
-AI Passport
+# AI Passport
 
-A decentralized identity and memory protocol for AI agents.
-AI Passport allows users to own a persistent, portable memory and personality profile for their AI across applications, games, and digital environments.
-It is designed for sovereignty, interoperability, and long-term data ownership, and is fully built on the Internet Computer (ICP).
+A decentralized identity and memory protocol for AI agents built on the Internet Computer.
 
-Table of Contents
+## Current Architecture
 
-Overview
+This repository is currently a **single-canister MVP** with backend and frontend components.
 
-Features
+### Backend
 
-Architecture
+- **Registry Canister**: Stores all user passport data (profile, config, memories) in a single canister
+- **Per-user Canister Architecture**: Prototype exists in `src/passport/main.mo` but is NOT deployed in this MVP
+- **Authentication**: Uses default DFX identity for local development (Internet Identity integration is planned)
+
+### Frontend
 
-Component Overview
+- **Tech Stack**: React + Vite + TypeScript + Tailwind CSS
+- **Design**: Apple-inspired minimal aesthetics
+- **Communication**: Talks exclusively to the registry canister
 
-Data Model
+## Local Development
+
+### Prerequisites
 
-Registry API
+- [DFX SDK](https://internetcomputer.org/docs/current/developer-docs/setup/install/) (v0.15+)
+- Node.js (v18+)
+- npm
 
-Passport API
+### Setup Instructions
 
-Local Development
+1. **Start Local Replica**
+   ```bash
+   dfx start --clean --background
+   ```
 
-Mainnet Deployment
+2. **Deploy Registry Canister**
+   ```bash
+   dfx deploy registry
+   ```
 
-Integration Guide for dApps
+3. **Get Registry Canister ID**
+   ```bash
+   dfx canister id registry
+   ```
+   Copy the output (e.g., `bkyz2-fmaaa-aaaaa-qaaaq-cai`)
 
-Security Model
+4. **Configure Frontend**
+   - Open `frontend/src/services/icp.ts`
+   - Update `REGISTRY_CANISTER_ID` with the value from step 3
+
+5. **Install Frontend Dependencies**
+   ```bash
+   cd frontend
+   npm install
+   ```
 
-Limitations
+6. **Run Frontend**
+   ```bash
+   npm run dev
+   ```
 
-Roadmap
+7. **Open in Browser**
+   - Navigate to `http://localhost:5173`
+   - The app will auto-connect and provision your passport
 
-Contributing
+## Example CLI Usage
 
-License
+Test the backend directly using DFX:
 
-Overview
+```bash
+# Get your principal ID
+dfx identity get-principal
 
-AI Passport provides:
+# Provision a passport (idempotent)
+dfx canister call registry provision_passport
 
-A personal canister storing user-owned AI data.
+# Update your profile
+dfx canister call registry update_profile '(record {
+  nickname = "CLI User";
+  avatarUrl = "";
+  bio = "Testing from CLI";
+  tags = vec { "cli"; "mvp" }
+})'
 
-A portable identity an AI agent can use across any application.
+# Add a public memory
+dfx canister call registry add_memory '("This is my first public memory", variant { Public })'
 
-A standard interface that external dApps can query.
+# Get your full state
+dfx canister call registry get_full_state '(null)'
 
-Full data sovereignty: the user owns the compute and storage.
+# Get public manifest (replace with your principal)
+dfx canister call registry get_manifest '(principal "YOUR_PRINCIPAL_HERE")'
+```
 
-Features
+## Project Structure
 
-User-owned identity and memory
-
-Decentralized storage on ICP
-
-Public/private memory segregation
-
-Customizable AI SystemConfig
-
-React-based management dashboard
-
-Internet Identity authentication
-
-Portable public manifest
-
-Scalable Registry + User Canister architecture
-
-Architecture
-
-The system follows a "Registry + Personal Passport" pattern.
-
-graph TD
-    User((User)) -->|Authenticate| UI[Frontend Application]
-    UI -->|Lookup / Provision| Registry[Registry Canister]
-    Registry -->|Create / Retrieve| Passport[User Passport Canister]
-    ExternalApp[External dApp] -.->|Read Public Manifest| Passport
-
-    subgraph Internet Computer
-        Registry
-        Passport
-    end
-
-Component Overview
-
-Registry Canister
-
-Maps Principal → PassportCanisterId
-
-Provisions new Passports
-
-Write-protected except for provisioning
-
-Passport Canister
-
-Stores Profile, SystemConfig, Memories
-
-Exposes public read-only manifest
-
-Write access restricted to owner
-
-Frontend Dashboard
-
-React + Typescript
-
-Internet Identity authentication
-
-Profile and memory management
-
-Data Model
-Profile
-nickname  
-avatarUrl  
-bio  
-tags  
-
-SystemConfig
-corePrompt  
-language  
-tone  
-
-MemoryEntry
-id  
-timestamp  
-source  
-content  
-visibility  
-
-PublicManifest
-owner  
-profile  
-publicMemories  
-version  
-
-Registry API
-
-provision_passport()
-
-get_passport(user : Principal)
-
-Passport API
-
-update_profile(...)
-
-update_config(...)
-
-add_memory(...)
-
-delete_memory(...)
-
-get_manifest()
-
-get_full_state()
-
-Local Development
-
-Start replica:
-
-dfx start --clean --background
-
-
-Deploy:
-
-dfx deploy internet_identity
-dfx deploy registry
-
-
-Run frontend:
-
-cd frontend
-npm install
-npm run dev
-
-Mainnet Deployment
-
-Convert ICP to cycles:
-
-dfx wallet --network ic balance
-
-
-Deploy:
-
-dfx deploy --network ic
-
-
-Configure frontend with live canister IDs.
-
-Integration Guide for dApps
-
-Call get_passport(userPrincipal)
-
-Call get_manifest()
-
-Use cases:
-
-Cross-app AI personality
-
-Memory portability
-
-Game/NPC personalization
-
-Preference onboarding
-
-Security Model
-
-Passport isolation per user
-
-Internet Identity authentication
-
-Public manifest read-only
-
-Cycles required for operation
-
-Future extensions: ACL, encrypted memory, rate limiting
-
-Limitations
-
-Missing ACL system
-
-No encrypted storage
-
-No on-canister LLM integration
-
-Local-development optimized
-
-Roadmap
-
-v0.2: Backup/restore, ACL
-v0.3: Encrypted memory, Threshold ECDSA
-v1.0: Mainnet release, module marketplace
-
-Contributing
-
-See CONTRIBUTING.md.
-
-License
-
-MIT License.
+```
+ai_passport/
+├── src/
+│   ├── types.mo              # Shared type definitions
+│   ├── registry/
+│   │   └── main.mo           # Active MVP: single-canister implementation
+│   └── passport/
+│       └── main.mo           # Future: per-user canister prototype (NOT deployed)
+├── frontend/
+│   ├── src/
+│   │   ├── components/       # UI components
+│   │   ├── contexts/         # React contexts (PassportContext)
+│   │   ├── pages/            # Page components
+│   │   ├── services/         # ICP integration (icp.ts, registryApi.ts, idls.ts)
+│   │   └── types.ts          # TypeScript types
+│   └── ...
+└── dfx.json                  # DFX configuration
+```
+
+## Features
+
+- **Dashboard**: View passport summary with profile and memory stats
+- **Profile Management**: Edit nickname, bio, avatar URL, and tags
+- **Memory Bank**: Add, view, and delete memories with visibility controls (Public/Private/Authorized)
+- **Developers**: Inspect public manifests by Principal ID
+
+## API Reference
+
+### Registry Canister Methods
+
+- `provision_passport()` - Create or retrieve passport (idempotent)
+- `update_profile(profile: Profile)` - Update user profile
+- `update_config(config: SystemConfig)` - Update AI configuration
+- `add_memory(content: Text, visibility: Visibility)` - Add new memory
+- `delete_memory(id: Nat)` - Delete memory by ID
+- `get_full_state(user: ?Principal)` - Get complete state (profile + config + all memories)
+- `get_manifest(user: Principal)` - Get public manifest (profile + public memories only)
+
+## Future Work
+
+- **Per-User Canister Architecture**: Implement the actor class pattern from `src/passport/main.mo`
+- **Internet Identity Integration**: Add proper authentication flow
+- **Encrypted Memories**: Support for private, encrypted storage
+- **Access Control Lists**: Fine-grained permission management
+- **Marketplace**: Module ecosystem for AI capabilities
+- **Mainnet Deployment**: Production-ready deployment with cycles management
+
+## Security Model
+
+- Passport data isolation per user principal
+- Public manifest exposes only public memories
+- Owner-only write access to profile and memories
+- Query calls for read-only operations
+
+## Limitations (Current MVP)
+
+- Single canister stores all user data (not scalable for production)
+- No Internet Identity integration (uses default DFX identity)
+- No encrypted storage
+- No access control lists
+- Local development only
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.

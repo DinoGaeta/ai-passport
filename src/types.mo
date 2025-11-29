@@ -35,6 +35,12 @@ module Types {
     version : Text;
   };
 
+  public type FullState = {
+    profile : Profile;
+    config : SystemConfig;
+    allMemories : [MemoryEntry];
+  };
+
   // --- Utilities ---
   public type Result<Ok, Err> = { #ok : Ok; #err : Err };
   public type Error = { 

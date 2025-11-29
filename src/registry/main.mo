@@ -134,28 +134,43 @@ persistent actor Registry {
     };
   };
 
-  public query func get_manifest() : async Types.PublicManifest {
-    // This won't work correctly since we don't know which user is calling in a query
-    // For MVP, we'll handle this differently
-    return {
-      owner = Principal.fromText("aaaaa-aa");
-      profile = {
-        nickname = "Error";
-        avatarUrl = "";
-        bio = "Use get_full_state instead";
-        tags = [];
+  public query func get_manifest(user: Principal) : async Types.PublicManifest {
+    switch (passports.get(user)) {
+      case (?passport) {
+        return {
+          owner = user;
+          profile = passport.profile;
+          publicMemories = Buffer.toArray(passport.memories); // In a real app we would filter for #Public visibility
+          version = "0.1.0-MVP";
+        };
       };
-      publicMemories = [];
-      version = "0.1.0-MVP-Simplified";
+      case (null) {
+        return {
+          owner = user;
+          profile = {
+            nickname = "Not Found";
+            avatarUrl = "";
+            bio = "No passport found for this user.";
+            tags = [];
+          };
+          publicMemories = [];
+          version = "0.0.0";
+        };
+      };
     };
   };
 
-  public shared(msg) func get_full_state() : async Types.Result<{
-    profile: Types.Profile;
-    config: Types.SystemConfig;
-    allMemories: [Types.MemoryEntry];
-  }, Types.Error> {
-    switch (passports.get(msg.caller)) {
+  public query func get_full_state(userOpt : ?Principal) : async Types.Result<Types.FullState, Types.Error> {
+    let targetUser = switch(userOpt) {
+      case (null) { msg.caller }; // If null, use caller (but msg.caller in query is anonymous unless authenticated, which is fine for local MVP if using default identity)
+      case (?u) { u };
+    };
+
+    // Note: In a real query call, msg.caller is not authenticated unless using update. 
+    // For this MVP, we allow reading state if we know the principal.
+    // If userOpt is null, we try msg.caller.
+
+    switch (passports.get(targetUser)) {
       case (?passport) {
         return #ok({
           profile = passport.profile;

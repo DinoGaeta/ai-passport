@@ -2,8 +2,10 @@ import Types "../types";
 import Buffer "mo:base/Buffer";
 import Time "mo:base/Time";
 
-// The Passport Actor Class
-// This is spawned for each user.
+// NOTE: This actor class is a FUTURE prototype for per-user canisters.
+// It is NOT wired into dfx.json in the current MVP.
+// The active implementation keeps all data inside the registry canister.
+
 shared ({ caller = installer }) actor class Passport(initOwner : Principal) {
 
   // --- State ---
