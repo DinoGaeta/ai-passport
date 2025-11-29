@@ -4,8 +4,11 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-MVP-green.svg)
 ![Stack](https://img.shields.io/badge/stack-Internet%20Computer-purple.svg)
+[![Built On ICP](assets/badge_icp.svg)](https://internetcomputer.org)
 
 **AI Passport** is a decentralized protocol that gives users ownership of their AI agent's memory, personality, and preferences. Built on the **Internet Computer (ICP)**, it creates a portable "soul" for your AI that travels with you across applications, games, and metaverses.
+
+📚 **Documentation**: [Architecture](docs/ARCHITECTURE.md) | [API Reference](docs/API_REFERENCE.md) | [Vision](docs/VISION.md) | [Roadmap](ROADMAP.md)
 
 ---
 

@@ -1,0 +1,6 @@
+<svg width="140" height="28" viewBox="0 0 140 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="140" height="28" rx="4" fill="#2D0A58"/>
+<path d="M20 8L24 14L20 20" stroke="#ED1E79" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 20L8 14L12 8" stroke="#29ABE2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="36" y="19" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="white">BUILT ON ICP</text>
+</svg>
