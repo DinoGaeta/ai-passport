@@ -23,7 +23,7 @@ Stop starting from scratch with every new AI tool.
 🔐 100% User Owned
 
 Built on @dfinity.
-Mint your passport today: [LINK]
+Mint your passport today: https://ai-passportweb.netlify.app
 
 #ICP #AI #Web3 #SelfSovereignIdentity"
 
@@ -38,7 +38,8 @@ AI Passport fixes this by storing your AI's system prompt and memories in a user
 - **Status:** MVP is live locally.
 - **Goal:** A standard for portable AI identity.
 
-Check out the repo and let me know what you think! [GITHUB LINK]"
+Check out the repo and let me know what you think! https://github.com/DinoGaeta/ai-passport
+Try the demo: https://ai-passportweb.netlify.app"
 
 ## 🎥 Video Script (30 Seconds)
 **[0:00-0:05]** (Visual: Frustrated user switching between ChatGPT, Claude, and a Game)
