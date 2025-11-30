@@ -35,6 +35,15 @@ module Types {
     version : Text;
   };
 
+  // --- Manifest (Q1 Push Model) ---
+  public type Manifest = {
+    version : Nat;          // Incremental counter: 1, 2, 3...
+    schema_version : Nat;   // Schema version (1 for current)
+    profile : Profile;
+    public_memories : [MemoryEntry];
+    updated_at : Nat64;     // Timestamp in nanoseconds
+  };
+
   public type FullState = {
     profile : Profile;
     config : SystemConfig;
@@ -49,5 +58,6 @@ module Types {
     #InvalidInput; 
     #SystemError : Text;
     #AlreadyExists;
+    #Conflict : Text;  // For version conflicts
   };
 };

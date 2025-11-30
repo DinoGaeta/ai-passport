@@ -4,6 +4,7 @@ import Principal "mo:base/Principal";
 import Buffer "mo:base/Buffer";
 import Time "mo:base/Time";
 import Array "mo:base/Array";
+import Nat "mo:base/Nat";
 
 // SIMPLIFIED MVP VERSION
 // Instead of spawning individual canisters, we store all passports in the Registry
@@ -21,6 +22,9 @@ persistent actor Registry {
   };
 
   transient let passports = HashMap.HashMap<Principal, PassportData>(0, Principal.equal, Principal.hash);
+
+  // Q1: Manifest storage for push model
+  transient let manifests = HashMap.HashMap<Principal, Types.Manifest>(0, Principal.equal, Principal.hash);
 
   // --- Public API ---
 
@@ -160,9 +164,27 @@ persistent actor Registry {
     };
   };
 
-  public query func get_full_state(userOpt : ?Principal) : async Types.Result<Types.FullState, Types.Error> {
+  // Q1: Push Model API
+  public shared ({caller}) func update_manifest(m : Types.Manifest) : async Types.Result<(), Types.Error> {
+    let current = manifests.get(caller);
+
+    switch (current) {
+      case (?existing) {
+        // Reject stale versions
+        if (m.version <= existing.version) {
+          return #err(#Conflict("Stale version: " # Nat.toText(m.version) # " <= " # Nat.toText(existing.version)));
+        };
+      };
+      case null {};
+    };
+
+    manifests.put(caller, m);
+    #ok(())
+  };
+
+  public shared query ({caller}) func get_full_state(userOpt : ?Principal) : async Types.Result<Types.FullState, Types.Error> {
     let targetUser = switch(userOpt) {
-      case (null) { msg.caller }; // If null, use caller (but msg.caller in query is anonymous unless authenticated, which is fine for local MVP if using default identity)
+      case (null) { caller }; // If null, use caller (but msg.caller in query is anonymous unless authenticated, which is fine for local MVP if using default identity)
       case (?u) { u };
     };
 
