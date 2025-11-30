@@ -35,12 +35,13 @@
 #### Week 3-4: vetKD Integration
 **Tasks:**
 1. Research vetKD API (DFINITY docs).
-2. Implement `deriveKey(principal, context)` in frontend.
-3. Encrypt memory content before sending to canister.
-4. Update `add_memory` to accept encrypted content.
-5. Test with 100 users (log success rate).
+2. **Local Dev Mode:** Use mock/fallback if `vetkd_system_api` is unavailable locally.
+3. Implement `deriveKey(principal, context)` in frontend.
+4. Encrypt memory content before sending to canister.
+5. Update `add_memory` to accept encrypted content.
+6. Test with 100 users (log success rate).
 
-**Deliverable:** Private memories encrypted with vetKD.
+**Deliverable:** Private memories encrypted with vetKD (or mock in dev).
 
 ---
 
